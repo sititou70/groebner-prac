@@ -10,7 +10,7 @@ fun printPolynomial(poly: Polynomial): String {
     for (mono in poly.monomials) {
         if (!leadingMono) terms.add(if (mono.coefficient >= 0) "+" else "-")
 
-        if (abs(mono.coefficient) == 1L) {
+        if (abs(mono.coefficient) == 1.0) {
             if (mono.powers.size == 0)
                 terms.add("1")
         } else {

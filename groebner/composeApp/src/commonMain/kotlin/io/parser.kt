@@ -18,15 +18,15 @@ fun getTermType(term: String): TermType {
 fun parseMonomial(terms: MutableList<String>): Monomial {
     val sign =
         if (getTermType(terms[0]) == TermType.PLUS_SIGN || getTermType(terms[0]) == TermType.MINUS_SIGN)
-            if (getTermType(terms.removeAt(0)) == TermType.PLUS_SIGN) 1 else -1
+            if (getTermType(terms.removeAt(0)) == TermType.PLUS_SIGN) 1.0 else -1.0
         else
-            1
+            1.0
 
     val coefficient =
         if (getTermType(terms[0]) == TermType.COEFFICIENT)
-            terms.removeAt(0).toLong()
+            terms.removeAt(0).toDouble()
         else
-            1
+            1.0
 
     val powers = HashMap<Char, UInt>()
     while (terms.size != 0 && getTermType(terms[0]) == TermType.POWER) {
@@ -51,7 +51,7 @@ fun parsePolynomial(input: String): Result<Polynomial> {
             .split(" ")
             .toMutableList()
 
-    val monos = mutableListOf<Monomial>()
+    val monomials = mutableListOf<Monomial>()
 
     while (terms.size != 0) {
         val prevTermsSize = terms.size
@@ -59,13 +59,13 @@ fun parsePolynomial(input: String): Result<Polynomial> {
         if (prevTermsSize == terms.size)
             return Result.failure(Exception())
 
-        monos.add(mono)
+        monomials.add(mono)
     }
 
-    val sortedMonos = monos.sortedWith { a, b ->
+    val sortedMonomials = monomials.sortedWith { a, b ->
         lexicographicOrder(a, b)
     }.toMutableList()
 
 
-    return Result.success(Polynomial(sortedMonos))
+    return Result.success(Polynomial(sortedMonomials))
 }
