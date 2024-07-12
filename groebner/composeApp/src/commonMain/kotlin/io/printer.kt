@@ -1,27 +1,37 @@
 package io
 
+import types.Monomial
 import types.Polynomial
 import kotlin.math.abs
+
+fun shouldPrintCoefficient(m: Monomial): Boolean {
+    if (m.coefficient == 0.0) return true
+    if (m.powers.size == 0) return true
+    if (abs(m.coefficient) == 1.0) return false
+
+    return true
+}
 
 fun printPolynomial(poly: Polynomial): String {
     val terms = mutableListOf<String>()
 
     var leadingMono = true
-    for (mono in poly.monomials) {
-        if (!leadingMono) terms.add(if (mono.coefficient >= 0) "+" else "-")
+    for (monomial in poly.monomials) {
+        // sign
+        if (!leadingMono) terms.add(if (monomial.coefficient >= 0) "+" else "-")
+        val signPrinted = !leadingMono
 
-        if (abs(mono.coefficient) == 1.0) {
-            if (mono.powers.size == 0)
-                terms.add("1")
-        } else {
-            if (leadingMono) {
-                terms.add(mono.coefficient.toString())
+        // coefficient
+        if (shouldPrintCoefficient(monomial)) {
+            if (signPrinted) {
+                terms.add(abs(monomial.coefficient).toString())
             } else {
-                terms.add(abs(mono.coefficient).toString())
+                terms.add(monomial.coefficient.toString())
             }
         }
 
-        for (power in mono.powers) {
+        // powers
+        for (power in monomial.powers) {
             if (power.value == 1u) {
                 terms.add(power.key.toString())
             } else {

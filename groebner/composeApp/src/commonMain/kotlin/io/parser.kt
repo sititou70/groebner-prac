@@ -1,6 +1,6 @@
 package io
 
-import lexicographicOrder
+import arithmetic.addMonomialToPolynomial
 import types.Monomial
 import types.Polynomial
 
@@ -51,21 +51,16 @@ fun parsePolynomial(input: String): Result<Polynomial> {
             .split(" ")
             .toMutableList()
 
-    val monomials = mutableListOf<Monomial>()
+    var polynomial = Polynomial(mutableListOf())
 
     while (terms.size != 0) {
         val prevTermsSize = terms.size
-        val mono = parseMonomial(terms)
+        val monomial = parseMonomial(terms)
         if (prevTermsSize == terms.size)
             return Result.failure(Exception())
 
-        monomials.add(mono)
+        polynomial = addMonomialToPolynomial(monomial, polynomial)
     }
 
-    val sortedMonomials = monomials.sortedWith { a, b ->
-        lexicographicOrder(a, b)
-    }.toMutableList()
-
-
-    return Result.success(Polynomial(sortedMonomials))
+    return Result.success(polynomial)
 }

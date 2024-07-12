@@ -4,7 +4,7 @@ import lexicographicOrder
 import types.Monomial
 import types.Polynomial
 
-fun addMonomialToPolynomial(p: Polynomial, m: Monomial): Polynomial {
+fun addMonomialToPolynomial(m: Monomial, p: Polynomial): Polynomial {
     val added = mutableListOf<Monomial>()
     var isAdded = false
     for (monomial in p.monomials) {
@@ -31,7 +31,7 @@ fun addMonomialToPolynomial(p: Polynomial, m: Monomial): Polynomial {
 fun addPolynomial(p1: Polynomial, p2: Polynomial): Polynomial {
     var added = p2
     for (p1Monomial in p1.monomials) {
-        added = addMonomialToPolynomial(added, p1Monomial)
+        added = addMonomialToPolynomial(p1Monomial, added)
     }
 
     return added
