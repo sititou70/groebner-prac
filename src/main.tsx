@@ -1,10 +1,13 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import React from "react";
+import ReactDOM from "react-dom/client";
+// @ts-ignore
+import { groebnerBasis } from "../groebner/build/js/packages/groebner-composeApp";
+console.log(groebnerBasis());
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const Sample = () => "sample";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+    <Sample />
+  </React.StrictMode>
+);
