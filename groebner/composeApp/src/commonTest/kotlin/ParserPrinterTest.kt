@@ -28,8 +28,8 @@ class ParserPrinterTest {
 
     @Test
     fun variables() {
-        var parsed = parsePolynomial("x + y - z + a + b - c").getOrNull()
+        var parsed = parsePolynomial("x + a + y + b - z - c").getOrNull()
         assertNotNull(parsed)
-        assertEquals("x + y - z + a + b - c", printPolynomial(parsed))
+        assertEquals("a + b - c + x + y - z", printPolynomial(parsed))
     }
 }

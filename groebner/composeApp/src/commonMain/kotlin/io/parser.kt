@@ -1,5 +1,6 @@
 package io
 
+import lexicographicOrder
 import types.Monomial
 import types.Polynomial
 
@@ -27,14 +28,14 @@ fun parseMonomial(terms: MutableList<String>): Monomial {
         else
             1
 
-    val powers = HashMap<Char, Int>()
+    val powers = HashMap<Char, UInt>()
     while (terms.size != 0 && getTermType(terms[0]) == TermType.POWER) {
         val term = terms.removeAt(0)
         if (term.contains("^")) {
             val splited = term.split("^")
-            powers[splited[0].first()] = splited[1].toInt()
+            powers[splited[0].first()] = splited[1].toUInt()
         } else {
-            powers[term.first()] = 1
+            powers[term.first()] = 1u
         }
 
     }
@@ -61,5 +62,10 @@ fun parsePolynomial(input: String): Result<Polynomial> {
         monos.add(mono)
     }
 
-    return Result.success(Polynomial(monos))
+    val sortedMonos = monos.sortedWith { a, b ->
+        lexicographicOrder(a, b)
+    }.toMutableList()
+
+
+    return Result.success(Polynomial(sortedMonos))
 }
