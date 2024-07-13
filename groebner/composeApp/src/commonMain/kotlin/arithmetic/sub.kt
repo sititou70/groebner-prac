@@ -3,7 +3,6 @@ package arithmetic
 import types.Monomial
 import types.Polynomial
 
-
 fun subPolynomial(p1: Polynomial, p2: Polynomial): Polynomial {
     val invertedP2 =
         Polynomial(

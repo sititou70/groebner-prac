@@ -1,5 +1,7 @@
 import io.parsePolynomial
 import io.printPolynomial
+import types.Monomial
+import types.Polynomial
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -34,10 +36,28 @@ class ParserPrinterTest {
     }
 
     @Test
-    fun zero() {
+    fun zero1() {
         val parsed = parsePolynomial("0").getOrNull()
         assertNotNull(parsed)
         assertEquals("0", printPolynomial(parsed))
+    }
+
+    @Test
+    fun zero2() {
+        assertEquals("0", printPolynomial(Polynomial(listOf())))
+    }
+
+    @Test
+    fun zeroPower() {
+        assertEquals(
+            "1", printPolynomial(
+                Polynomial(
+                    listOf(
+                        Monomial(1.0, hashMapOf('x' to 0u, 'y' to 0u, 'z' to 0u))
+                    )
+                )
+            )
+        )
     }
 
     @Test
@@ -52,5 +72,12 @@ class ParserPrinterTest {
         val parsed = parsePolynomial("- x").getOrNull()
         assertNotNull(parsed)
         assertEquals("- x", printPolynomial(parsed))
+    }
+
+    @Test
+    fun vartiableSorting() {
+        val parsed = parsePolynomial("c b a").getOrNull()
+        assertNotNull(parsed)
+        assertEquals("a b c", printPolynomial(parsed))
     }
 }
