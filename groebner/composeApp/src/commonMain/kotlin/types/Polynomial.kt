@@ -1,3 +1,3 @@
 package types
 
-data class Polynomial(val monomials: MutableList<Monomial>)
+data class Polynomial(val monomials: List<Monomial>)
