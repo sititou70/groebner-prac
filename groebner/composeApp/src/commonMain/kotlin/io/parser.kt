@@ -2,8 +2,8 @@ package io
 
 import types.Monomial
 import types.Polynomial
-import types.monomialFor
-import types.polynomialFor
+import types.monomialOf
+import types.polynomialOf
 
 enum class TermType { PLUS_SIGN, MINUS_SIGN, COEFFICIENT, POWER, UNKNOWN }
 
@@ -41,7 +41,7 @@ fun parseMonomial(terms: MutableList<String>): Monomial {
 
     }
 
-    return monomialFor(sign * coefficient, powers)
+    return monomialOf(sign * coefficient, powers)
 }
 
 fun parsePolynomial(input: String): Result<Polynomial> {
@@ -52,7 +52,7 @@ fun parsePolynomial(input: String): Result<Polynomial> {
             .split(" ")
             .toMutableList()
 
-    var polynomial = polynomialFor(listOf())
+    var polynomial = polynomialOf(listOf())
 
     while (terms.size != 0) {
         val prevTermsSize = terms.size
@@ -60,7 +60,7 @@ fun parsePolynomial(input: String): Result<Polynomial> {
         if (prevTermsSize == terms.size)
             return Result.failure(Exception())
 
-        polynomial = polynomialFor(polynomial.monomials + listOf(monomial))
+        polynomial = polynomialOf(polynomial.monomials + listOf(monomial))
     }
 
     return Result.success(polynomial)

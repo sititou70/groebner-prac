@@ -5,7 +5,7 @@ data class Monomial(
     val powers: Map<Char, UInt>
 )
 
-fun monomialFor(
+fun monomialOf(
     coefficient: Double,
     powers: Map<Char, UInt>
 ): Monomial {

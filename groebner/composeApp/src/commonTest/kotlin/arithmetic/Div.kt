@@ -5,7 +5,7 @@ import io.printPolynomial
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class Reduce {
+class Div {
     @Test
     fun singleVariable1() {
         // see: https://www.lab2.toho-u.ac.jp/sci/is/tsuchiya/Introduction%20to%20Grobner%20basis.pdf

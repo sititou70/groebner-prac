@@ -2,8 +2,8 @@ package arithmetic
 
 import types.Monomial
 import types.Polynomial
-import types.monomialFor
-import types.polynomialFor
+import types.monomialOf
+import types.polynomialOf
 
 fun divMonomial(m1: Monomial, m2: Monomial): Result<Monomial> {
     if (m2.coefficient == 0.0) return Result.failure(Exception())
@@ -17,14 +17,14 @@ fun divMonomial(m1: Monomial, m2: Monomial): Result<Monomial> {
         power[variable] = (m1.powers[variable] ?: 0u) - (m2.powers[variable] ?: 0u)
     }
 
-    return Result.success(monomialFor(m1.coefficient / m2.coefficient, power))
+    return Result.success(monomialOf(m1.coefficient / m2.coefficient, power))
 }
 
 fun reducePolynomial(p: Polynomial, ps: List<Polynomial>): Pair<List<Polynomial>, Polynomial> {
     val quotients = ps.map { Polynomial(listOf()) }.toMutableList()
     var remainder = Polynomial(listOf())
 
-    var restOfP = polynomialFor(p.monomials.toList())
+    var restOfP = polynomialOf(p.monomials.toList())
     while (restOfP.monomials.isNotEmpty()) {
         var divided = false
         for ((psItemIndex, psItem) in ps.withIndex()) {
@@ -33,12 +33,12 @@ fun reducePolynomial(p: Polynomial, ps: List<Polynomial>): Pair<List<Polynomial>
                 restOfP =
                     subPolynomial(
                         restOfP,
-                        mulPolynomial(psItem, polynomialFor(listOf(lTRestOfPDividedByLTPsItem.getOrThrow())))
+                        mulPolynomial(psItem, polynomialOf(listOf(lTRestOfPDividedByLTPsItem.getOrThrow())))
                     )
                 quotients[psItemIndex] =
                     addPolynomial(
                         quotients[psItemIndex],
-                        polynomialFor(listOf(lTRestOfPDividedByLTPsItem.getOrThrow()))
+                        polynomialOf(listOf(lTRestOfPDividedByLTPsItem.getOrThrow()))
                     )
                 divided = true
                 break
@@ -46,8 +46,8 @@ fun reducePolynomial(p: Polynomial, ps: List<Polynomial>): Pair<List<Polynomial>
         }
 
         if (!divided) {
-            remainder = addPolynomial(remainder, polynomialFor(listOf(restOfP.monomials[0])))
-            restOfP = subPolynomial(restOfP, polynomialFor(listOf(restOfP.monomials[0])))
+            remainder = addPolynomial(remainder, polynomialOf(listOf(restOfP.monomials[0])))
+            restOfP = subPolynomial(restOfP, polynomialOf(listOf(restOfP.monomials[0])))
         }
     }
 

@@ -2,8 +2,8 @@ package arithmetic
 
 import types.Monomial
 import types.Polynomial
-import types.monomialFor
-import types.polynomialFor
+import types.monomialOf
+import types.polynomialOf
 
 fun mulMonomial(m1: Monomial, m2: Monomial): Monomial {
     val powers = HashMap(m2.powers)
@@ -14,11 +14,11 @@ fun mulMonomial(m1: Monomial, m2: Monomial): Monomial {
         powers[m1Variable] = m1Power + (powers[m1Variable] ?: 0u)
     }
 
-    return monomialFor(m1.coefficient * m2.coefficient, powers)
+    return monomialOf(m1.coefficient * m2.coefficient, powers)
 }
 
 fun mulPolynomialByMonomial(p: Polynomial, m: Monomial): Polynomial {
-    return polynomialFor(p.monomials.map { mulMonomial(it, m) })
+    return polynomialOf(p.monomials.map { mulMonomial(it, m) })
 }
 
 fun mulPolynomial(p1: Polynomial, p2: Polynomial): Polynomial {

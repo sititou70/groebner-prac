@@ -1,10 +1,12 @@
 package types
 
+import doubleEquals
+
 data class Polynomial(
     val monomials: List<Monomial>
 )
 
-fun polynomialFor(
+fun polynomialOf(
     monomials: List<Monomial>
 ): Polynomial {
     val monomialsMap = mutableMapOf<Map<Char, UInt>, Monomial>()
@@ -14,16 +16,15 @@ fun polynomialFor(
             monomialsMap[monomial.powers] = monomial
         } else {
             monomialsMap[monomial.powers] =
-                monomialFor(item.coefficient + monomial.coefficient, monomial.powers)
+                monomialOf(item.coefficient + monomial.coefficient, monomial.powers)
         }
     }
 
     return Polynomial(
         monomialsMap.values
-            .filter { it.coefficient != 0.0 }
+            .filter { !doubleEquals(it.coefficient, 0.0) }
             .sortedWith { a, b ->
                 lexicographicOrder(a, b)
             }
     )
 }
-
