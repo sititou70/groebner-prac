@@ -1,4 +1,6 @@
 import { FC, useEffect, useState } from "react";
+import { InlineMath } from "react-katex";
+import "katex/dist/katex.min.css";
 import "./App.css";
 
 // @ts-ignore
@@ -33,6 +35,11 @@ export const App: FC = () => {
     })();
   }, [input]);
 
+  const [displayMode, setDisplayMode] = useState<"katex" | "text">("katex");
+  const onChangeDisplayModeRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDisplayMode(e.target.value as "katex" | "text");
+  };
+
   return (
     <div className="wrapper">
       <h1>Gröbner basis</h1>
@@ -57,11 +64,45 @@ export const App: FC = () => {
 
       <h2>result</h2>
       <p>{resultTime} ms</p>
-      <ul>
-        {result.map((x) => (
-          <li key={x}>{x}</li>
-        ))}
-      </ul>
+
+      <p className="displayMode">
+        <label>
+          <input
+            type="radio"
+            name="displayMode"
+            value="katex"
+            defaultChecked
+            onChange={onChangeDisplayModeRadio}
+          />
+          katex
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="displayMode"
+            value="text"
+            onChange={onChangeDisplayModeRadio}
+          />
+          text
+        </label>
+      </p>
+
+      {displayMode === "katex" && (
+        <ul>
+          {result.map((x) => (
+            <li key={x}>
+              <InlineMath math={x} />
+            </li>
+          ))}
+        </ul>
+      )}
+      {displayMode === "text" && (
+        <ul>
+          {result.map((x) => (
+            <li key={x}>{x}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

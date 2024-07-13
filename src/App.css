@@ -26,3 +26,8 @@ select {
   margin-left: 0.5em;
   font-size: 1em;
 }
+
+.displayMode {
+  display: flex;
+  gap: 1em;
+}
