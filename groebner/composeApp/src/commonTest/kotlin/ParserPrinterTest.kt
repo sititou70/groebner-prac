@@ -1,6 +1,5 @@
 import io.parsePolynomial
 import io.printPolynomial
-import types.Monomial
 import types.Polynomial
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -49,15 +48,9 @@ class ParserPrinterTest {
 
     @Test
     fun zeroPower() {
-        assertEquals(
-            "1", printPolynomial(
-                Polynomial(
-                    listOf(
-                        Monomial(1.0, hashMapOf('x' to 0u, 'y' to 0u, 'z' to 0u))
-                    )
-                )
-            )
-        )
+        val parsed = parsePolynomial("1 x^0 y^0 z^0").getOrNull()
+        assertNotNull(parsed)
+        assertEquals("1", printPolynomial(parsed))
     }
 
     @Test

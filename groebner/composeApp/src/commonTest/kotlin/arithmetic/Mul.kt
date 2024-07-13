@@ -45,7 +45,7 @@ class Mul {
             printPolynomial(mulPolynomial(p1, p2))
         )
     }
-
+    
     @Test
     fun multiVariable() {
         val p1 = parsePolynomial("2 x^2 y^3 + -3 y^4 + y + 1").getOrNull()!!

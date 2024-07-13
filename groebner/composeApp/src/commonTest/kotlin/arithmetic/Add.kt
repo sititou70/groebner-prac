@@ -35,4 +35,24 @@ class Add {
             printPolynomial(addPolynomial(p1, p2))
         )
     }
+
+    @Test
+    fun case4() {
+        val p1 = parsePolynomial("y^2").getOrNull()!!
+        val p2 = parsePolynomial("z").getOrNull()!!
+        assertEquals(
+            "y^2 + z",
+            printPolynomial(addPolynomial(p1, p2))
+        )
+    }
+
+    @Test
+    fun zeroPower() {
+        val p1 = parsePolynomial("x^0 y^0").getOrNull()!!
+        val p2 = parsePolynomial("z^0").getOrNull()!!
+        assertEquals(
+            "2",
+            printPolynomial(addPolynomial(p1, p2))
+        )
+    }
 }

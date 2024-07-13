@@ -1,8 +1,9 @@
 package io
 
-import arithmetic.addMonomialToPolynomial
 import types.Monomial
 import types.Polynomial
+import types.monomialFor
+import types.polynomialFor
 
 enum class TermType { PLUS_SIGN, MINUS_SIGN, COEFFICIENT, POWER, UNKNOWN }
 
@@ -28,7 +29,7 @@ fun parseMonomial(terms: MutableList<String>): Monomial {
         else
             1.0
 
-    val powers = HashMap<Char, UInt>()
+    val powers = mutableMapOf<Char, UInt>()
     while (terms.size != 0 && getTermType(terms[0]) == TermType.POWER) {
         val term = terms.removeAt(0)
         if (term.contains("^")) {
@@ -40,7 +41,7 @@ fun parseMonomial(terms: MutableList<String>): Monomial {
 
     }
 
-    return Monomial(sign * coefficient, powers)
+    return monomialFor(sign * coefficient, powers)
 }
 
 fun parsePolynomial(input: String): Result<Polynomial> {
@@ -51,7 +52,7 @@ fun parsePolynomial(input: String): Result<Polynomial> {
             .split(" ")
             .toMutableList()
 
-    var polynomial = Polynomial(mutableListOf())
+    var polynomial = polynomialFor(listOf())
 
     while (terms.size != 0) {
         val prevTermsSize = terms.size
@@ -59,7 +60,7 @@ fun parsePolynomial(input: String): Result<Polynomial> {
         if (prevTermsSize == terms.size)
             return Result.failure(Exception())
 
-        polynomial = addMonomialToPolynomial(monomial, polynomial)
+        polynomial = polynomialFor(polynomial.monomials + listOf(monomial))
     }
 
     return Result.success(polynomial)

@@ -1,6 +1,6 @@
-import types.Monomial
+package types
 
-fun getVariableOrder(variable: Char, power: HashMap<Char, UInt>): UInt {
+fun getVariableOrder(variable: Char, power: Map<Char, UInt>): UInt {
     val order = power[variable]
     return order ?: 0u
 }

@@ -1,4 +1,5 @@
 import types.Monomial
+import types.lexicographicOrder
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -5,8 +5,7 @@ import types.Polynomial
 import kotlin.math.abs
 
 fun shouldPrintCoefficient(m: Monomial): Boolean {
-    if (m.coefficient == 0.0) return true
-    if (m.powers.values.fold(0u) { x, y -> x + y } == 0u) return true
+    if (m.powers.isEmpty()) return true
     if (abs(m.coefficient) == 1.0) return false
 
     return true
@@ -34,13 +33,11 @@ fun printPolynomial(p: Polynomial): String {
 
         // powers
         if (monomial.coefficient != 0.0) {
-            for (power in monomial.powers.entries.sortedBy { it.key }) {
-                if (power.value == 0u) {
-                    // do nothing
-                } else if (power.value == 1u) {
-                    terms.add(power.key.toString())
+            for ((variable, power) in monomial.powers.entries.sortedBy { it.key }) {
+                if (power == 1u) {
+                    terms.add(variable.toString())
                 } else {
-                    terms.add(power.key + "^" + power.value)
+                    terms.add("$variable^$power")
                 }
             }
         }

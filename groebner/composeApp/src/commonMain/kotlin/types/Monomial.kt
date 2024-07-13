@@ -1,3 +1,17 @@
 package types
 
-data class Monomial(var coefficient: Double, val powers: HashMap<Char, UInt>)
+data class Monomial(
+    val coefficient: Double,
+    val powers: Map<Char, UInt>
+)
+
+fun monomialFor(
+    coefficient: Double,
+    powers: Map<Char, UInt>
+): Monomial {
+    return Monomial(
+        coefficient,
+        powers.entries.filter { it.value != 0u }.associate { it.key to it.value }
+    )
+}
+
