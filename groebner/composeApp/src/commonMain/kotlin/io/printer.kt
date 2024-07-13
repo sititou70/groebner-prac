@@ -15,19 +15,19 @@ fun shouldPrintCoefficient(m: Monomial): Boolean {
 fun printPolynomial(poly: Polynomial): String {
     val terms = mutableListOf<String>()
 
-    var leadingMono = true
+    var leadingMonomial = true
     for (monomial in poly.monomials) {
         // sign
-        if (!leadingMono) terms.add(if (monomial.coefficient >= 0) "+" else "-")
-        val signPrinted = !leadingMono
+        if (monomial.coefficient >= 0) {
+            if (!leadingMonomial)
+                terms.add("+")
+        } else {
+            terms.add("-")
+        }
 
         // coefficient
         if (shouldPrintCoefficient(monomial)) {
-            if (signPrinted) {
-                terms.add(abs(monomial.coefficient).toString())
-            } else {
-                terms.add(monomial.coefficient.toString())
-            }
+            terms.add(abs(monomial.coefficient).toString())
         }
 
         // powers
@@ -39,7 +39,7 @@ fun printPolynomial(poly: Polynomial): String {
             }
         }
 
-        leadingMono = false
+        leadingMonomial = false
     }
 
     return terms.joinToString(" ")

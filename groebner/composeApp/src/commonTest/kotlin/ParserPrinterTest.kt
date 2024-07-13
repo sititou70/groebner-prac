@@ -9,7 +9,7 @@ class ParserPrinterTest {
     fun spaces() {
         val parsed = parsePolynomial("   +  -2  x^2  ").getOrNull()
         assertNotNull(parsed)
-        assertEquals("-2 x^2", printPolynomial(parsed))
+        assertEquals("- 2 x^2", printPolynomial(parsed))
     }
 
     @Test
@@ -23,7 +23,7 @@ class ParserPrinterTest {
     fun numbers() {
         val parsed = parsePolynomial("1 + 2 - 3 - -4 - 5").getOrNull()
         assertNotNull(parsed)
-        assertEquals("-1", printPolynomial(parsed))
+        assertEquals("- 1", printPolynomial(parsed))
     }
 
     @Test
@@ -38,5 +38,19 @@ class ParserPrinterTest {
         val parsed = parsePolynomial("0").getOrNull()
         assertNotNull(parsed)
         assertEquals("0", printPolynomial(parsed))
+    }
+
+    @Test
+    fun leadingMinusCoefficient() {
+        val parsed = parsePolynomial("- 1").getOrNull()
+        assertNotNull(parsed)
+        assertEquals("- 1", printPolynomial(parsed))
+    }
+
+    @Test
+    fun leadingMinusVariable() {
+        val parsed = parsePolynomial("- x").getOrNull()
+        assertNotNull(parsed)
+        assertEquals("- x", printPolynomial(parsed))
     }
 }
