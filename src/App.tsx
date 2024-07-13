@@ -91,7 +91,7 @@ export const App: FC = () => {
         <ul>
           {result.map((x) => (
             <li key={x}>
-              <InlineMath math={x} />
+              <InlineMath math={x.replace(/\^([0-9]+)/g, "^{$1}")} />
             </li>
           ))}
         </ul>
