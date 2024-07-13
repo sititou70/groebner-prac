@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+}
+
+h1,
+h2 {
+  margin: 0.5em 0 0 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+textarea {
+  font-size: 1em;
+  height: 20vh;
+  align-self: stretch;
+}
+
+select {
+  margin-left: 0.5em;
+  font-size: 1em;
+}

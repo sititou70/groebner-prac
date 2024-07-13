@@ -1,3 +1,4 @@
+@JsExport
 val sampleQuestions = """
 
 // easy 1
