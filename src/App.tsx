@@ -1,7 +1,8 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
+import "./App.css";
 import { InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
-import "./App.css";
+import Worker from "./worker?worker";
 
 // @ts-ignore
 // prettier-ignore
@@ -18,30 +19,77 @@ const questions: { title: string; comments: string; basis: string }[] =
       basis: x[2],
     }));
 
+const useThrottle = (ms: number, callback: VoidFunction) => {
+  const timerRef = useRef(0);
+
+  return () => {
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      callback();
+    }, ms);
+    return;
+  };
+};
+
 export const App: FC = () => {
+  const getWorker = () =>
+    new Promise<Worker>((resolve) => {
+      const worker = new Worker();
+      worker.addEventListener("message", (e) => {
+        if ("ready" in e.data) resolve(worker);
+      });
+    });
+
   const [input, setInput] = useState(
     questions[0].comments + "\n\n" + questions[0].basis
   );
-  const [result, setResult] = useState<string[]>([]);
-  const [resultTime, setResultTime] = useState<number>(0);
-  useEffect(() => {
-    void (async () => {
-      try {
-        const startTime = performance.now();
-        const result = groebnerBasisString(
-          input
-            .replace(/\r\n/g, "\n")
-            .split("\n")
-            .filter((x) => x !== "")
-            .filter((x) => !x.startsWith("//"))
-            .join(",")
-        );
-        setResult(result.split(","));
-        setResultTime(performance.now() - startTime);
-      } catch (e) {
-        console.error(e);
+  const [resultBasis, setResultBasis] = useState<string[]>([]);
+  const [taskInfo, setTaskInfo] = useState("");
+  const workerRef = useRef<Worker>();
+  const calcuratingRef = useRef(false);
+  const onInputChange = async () => {
+    let worker: Worker;
+    if (workerRef.current && !calcuratingRef.current) {
+      worker = workerRef.current;
+    } else {
+      workerRef.current?.terminate();
+      worker = await getWorker();
+      workerRef.current = worker;
+    }
+
+    setTaskInfo("calculating...");
+    calcuratingRef.current = true;
+    const taskId = Math.random();
+    const startTime = performance.now();
+
+    worker.addEventListener("message", (e) => {
+      if (e.data.taskId !== taskId) return;
+
+      if ("error" in e.data) {
+        console.error(e.data.error);
+        setTaskInfo(`error`);
       }
-    })();
+
+      if ("basisString" in e.data) {
+        setResultBasis(e.data.basisString.split(","));
+        const workingTime = performance.now() - startTime;
+        setTaskInfo(`done (${workingTime} ms)`);
+      }
+
+      calcuratingRef.current = false;
+    });
+
+    const basisString = input
+      .replace(/\r\n/g, "\n")
+      .split("\n")
+      .filter((x) => x !== "")
+      .filter((x) => !x.startsWith("//"))
+      .join(",");
+    worker.postMessage({ taskId, basisString });
+  };
+  const onInputChangeThrottled = useThrottle(300, onInputChange);
+  useEffect(() => {
+    onInputChangeThrottled();
   }, [input]);
 
   const [displayMode, setDisplayMode] = useState<"katex" | "text">("katex");
@@ -72,7 +120,7 @@ export const App: FC = () => {
       </label>
 
       <h2>result</h2>
-      <p>{resultTime} ms</p>
+      <p>{taskInfo}</p>
 
       <p className="displayMode">
         <label>
@@ -98,7 +146,7 @@ export const App: FC = () => {
 
       {displayMode === "katex" && (
         <ul>
-          {result.map((x) => (
+          {resultBasis.map((x) => (
             <li key={x}>
               <InlineMath math={x.replace(/\^([0-9]+)/g, "^{$1}")} />
             </li>
@@ -107,7 +155,7 @@ export const App: FC = () => {
       )}
       {displayMode === "text" && (
         <ul>
-          {result.map((x) => (
+          {resultBasis.map((x) => (
             <li key={x}>{x}</li>
           ))}
         </ul>
