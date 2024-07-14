@@ -7,17 +7,21 @@ import "./App.css";
 // prettier-ignore
 import { groebnerBasisString, sampleQuestions } from "../groebner/build/js/packages/groebner-composeApp/kotlin/groebner-composeApp.mjs";
 
-const questions: { title: string; basis: string }[] = sampleQuestions
-  .get()
-  .split("---")
-  .map((x: string) => x.split("\n\n"))
-  .map((x: string) => ({
-    title: x[1].split("\n")[0].replace("// ", ""),
-    basis: x[2],
-  }));
+const questions: { title: string; comments: string; basis: string }[] =
+  sampleQuestions
+    .get()
+    .split("---")
+    .map((x: string) => x.split("\n\n"))
+    .map((x: string) => ({
+      title: x[1].split("\n")[0].replace("// ", ""),
+      comments: x[1],
+      basis: x[2],
+    }));
 
 export const App: FC = () => {
-  const [input, setInput] = useState(questions[0].basis);
+  const [input, setInput] = useState(
+    questions[0].comments + "\n\n" + questions[0].basis
+  );
   const [result, setResult] = useState<string[]>([]);
   const [resultTime, setResultTime] = useState<number>(0);
   useEffect(() => {
@@ -25,7 +29,12 @@ export const App: FC = () => {
       try {
         const startTime = performance.now();
         const result = groebnerBasisString(
-          input.replace(/\r\n/g, "\n").replace(/\n/g, ",")
+          input
+            .replace(/\r\n/g, "\n")
+            .split("\n")
+            .filter((x) => x !== "")
+            .filter((x) => !x.startsWith("//"))
+            .join(",")
         );
         setResult(result.split(","));
         setResultTime(performance.now() - startTime);
@@ -51,7 +60,7 @@ export const App: FC = () => {
         <select
           onChange={(e) => {
             const question = questions.find((x) => x.title === e.target.value);
-            if (question) setInput(question.basis);
+            if (question) setInput(question.comments + "\n\n" + question.basis);
           }}
         >
           {questions.map((x) => (
