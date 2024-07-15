@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 }
 
 kotlin {
@@ -25,5 +26,3 @@ kotlin {
         }
     }
 }
-
-
