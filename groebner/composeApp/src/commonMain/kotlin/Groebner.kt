@@ -1,11 +1,18 @@
-import arithmetic.*
+import arithmetic.divMonomial
+import arithmetic.mulPolynomial
+import arithmetic.mulPolynomialByMonomial
+import arithmetic.reducePolynomial
+import arithmetic.subPolynomial
 import types.Monomial
 import types.Polynomial
 import types.monomialOf
 import types.polynomialOf
 import kotlin.math.max
 
-fun sPolynomial(p1: Polynomial, p2: Polynomial): Polynomial {
+fun sPolynomial(
+    p1: Polynomial,
+    p2: Polynomial,
+): Polynomial {
     val leastCommonMultiple =
         monomialOf(
             1.0,
@@ -13,9 +20,9 @@ fun sPolynomial(p1: Polynomial, p2: Polynomial): Polynomial {
                 .associateWith {
                     max(
                         p1.monomials[0].powers[it] ?: 0u,
-                        p2.monomials[0].powers[it] ?: 0u
+                        p2.monomials[0].powers[it] ?: 0u,
                     )
-                }
+                },
         )
 
     return subPolynomial(
@@ -24,59 +31,68 @@ fun sPolynomial(p1: Polynomial, p2: Polynomial): Polynomial {
                 listOf(
                     divMonomial(
                         leastCommonMultiple,
-                        p1.monomials[0]
-                    ).getOrThrow()
-                )
+                        p1.monomials[0],
+                    ).getOrThrow(),
+                ),
             ),
-            p1
+            p1,
         ),
         mulPolynomial(
             polynomialOf(
                 listOf(
                     divMonomial(
                         leastCommonMultiple,
-                        p2.monomials[0]
+                        p2.monomials[0],
                     ).getOrThrow(),
-                )
+                ),
             ),
-            p2
-        )
-
+            p2,
+        ),
     )
 }
 
-fun inMonomialIdeal(m: Monomial, basis: Set<Monomial>): Boolean {
+fun inMonomialIdeal(
+    m: Monomial,
+    basis: Set<Monomial>,
+): Boolean {
     for (base in basis) {
-        if (divMonomial(m, base).isSuccess)
+        if (divMonomial(m, base).isSuccess) {
             return true
+        }
     }
 
     return false
 }
 
 fun reduceGroebnerBasis(inputBasis: Set<Polynomial>): Set<Polynomial> {
-    fun isRemovableBase(base: Polynomial, basis: Set<Polynomial>): Boolean {
+    fun isRemovableBase(
+        base: Polynomial,
+        basis: Set<Polynomial>,
+    ): Boolean {
         val basisWithoutBase = basis.toMutableSet()
         basisWithoutBase.remove(base)
 
         for (monomial in base.monomials) {
             if (inMonomialIdeal(
                     monomial,
-                    basisWithoutBase.map { it.monomials[0] }.toSet()
+                    basisWithoutBase.map { it.monomials[0] }.toSet(),
                 )
-            )
+            ) {
                 return true
+            }
         }
 
         return false
     }
 
-    val basis = inputBasis.map {
-        mulPolynomialByMonomial(
-            it,
-            monomialOf(1 / it.monomials[0].coefficient, mapOf())
-        )
-    }.toMutableSet()
+    val basis =
+        inputBasis
+            .map {
+                mulPolynomialByMonomial(
+                    it,
+                    monomialOf(1 / it.monomials[0].coefficient, mapOf()),
+                )
+            }.toMutableSet()
 
     var removed = true
     while (removed && basis.isNotEmpty()) {
@@ -86,8 +102,9 @@ fun reduceGroebnerBasis(inputBasis: Set<Polynomial>): Set<Polynomial> {
             if (isRemovableBase(base, basis)) {
                 basis.remove(base)
                 val remainder = reducePolynomial(base, basis.toList()).second
-                if (remainder.monomials.isNotEmpty())
+                if (remainder.monomials.isNotEmpty()) {
                     basis.add(remainder)
+                }
                 removed = true
                 break
             }
@@ -115,7 +132,6 @@ fun groebnerBasis(inputBasis: Set<Polynomial>): Set<Polynomial> {
                 }
             }
         }
-
     } while (isChanged)
 
     return reduceGroebnerBasis(basis)

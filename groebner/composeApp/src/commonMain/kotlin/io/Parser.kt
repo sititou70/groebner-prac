@@ -18,16 +18,18 @@ fun getTermType(term: String): TermType {
 
 fun parseMonomial(terms: MutableList<String>): Monomial {
     val sign =
-        if (getTermType(terms[0]) == TermType.PLUS_SIGN || getTermType(terms[0]) == TermType.MINUS_SIGN)
+        if (getTermType(terms[0]) == TermType.PLUS_SIGN || getTermType(terms[0]) == TermType.MINUS_SIGN) {
             if (getTermType(terms.removeAt(0)) == TermType.PLUS_SIGN) 1.0 else -1.0
-        else
+        } else {
             1.0
+        }
 
     val coefficient =
-        if (getTermType(terms[0]) == TermType.COEFFICIENT)
+        if (getTermType(terms[0]) == TermType.COEFFICIENT) {
             terms.removeAt(0).toDouble()
-        else
+        } else {
             1.0
+        }
 
     val powers = mutableMapOf<Char, UInt>()
     while (terms.size != 0 && getTermType(terms[0]) == TermType.POWER) {
@@ -38,7 +40,6 @@ fun parseMonomial(terms: MutableList<String>): Monomial {
         } else {
             powers[term.first()] = 1u
         }
-
     }
 
     return monomialOf(sign * coefficient, powers)
@@ -57,8 +58,9 @@ fun parsePolynomial(input: String): Result<Polynomial> {
     while (terms.size != 0) {
         val prevTermsSize = terms.size
         val monomial = parseMonomial(terms)
-        if (prevTermsSize == terms.size)
+        if (prevTermsSize == terms.size) {
             return Result.failure(Exception())
+        }
 
         polynomial = polynomialOf(polynomial.monomials + listOf(monomial))
     }

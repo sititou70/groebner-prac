@@ -1,6 +1,9 @@
 package types
 
-fun getVariableOrder(variable: Char, power: Map<Char, UInt>): UInt {
+fun getVariableOrder(
+    variable: Char,
+    power: Map<Char, UInt>,
+): UInt {
     val order = power[variable]
     return order ?: 0u
 }
@@ -14,7 +17,10 @@ fun getVariableOrder(variable: Char, power: Map<Char, UInt>): UInt {
  * - 0: aとbは同じ
  * - -1: aが大きい
  */
-fun lexicographicOrder(a: Monomial, b: Monomial): Int {
+fun lexicographicOrder(
+    a: Monomial,
+    b: Monomial,
+): Int {
     val variables =
         (a.powers.keys.toSet() union b.powers.keys.toSet())
             .toList()

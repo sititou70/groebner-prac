@@ -12,7 +12,7 @@ class Sub {
         val p2 = parsePolynomial("3 x").getOrNull()!!
         assertEquals(
             "2 x^2 y - 3 x + 1",
-            printPolynomial(subPolynomial(p1, p2))
+            printPolynomial(subPolynomial(p1, p2)),
         )
     }
 
@@ -22,7 +22,7 @@ class Sub {
         val p2 = parsePolynomial("3 x^2 y").getOrNull()!!
         assertEquals(
             "- x^2 y + 1",
-            printPolynomial(subPolynomial(p1, p2))
+            printPolynomial(subPolynomial(p1, p2)),
         )
     }
 
@@ -32,7 +32,7 @@ class Sub {
         val p2 = parsePolynomial("-2 x^2 y").getOrNull()!!
         assertEquals(
             "1",
-            printPolynomial(subPolynomial(p1, p2))
+            printPolynomial(subPolynomial(p1, p2)),
         )
     }
 }

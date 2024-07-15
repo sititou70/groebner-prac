@@ -7,7 +7,7 @@ fun groebnerBasisString(inputs: String): String {
         inputs
             .split(",")
             .map { parsePolynomial(it).getOrThrow() }
-            .toSet()
+            .toSet(),
     )
         .map { printPolynomial(it) }
         .joinToString(",")

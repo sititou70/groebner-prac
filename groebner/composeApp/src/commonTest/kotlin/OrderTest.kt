@@ -10,8 +10,8 @@ class OrderTest {
             1,
             lexicographicOrder(
                 Monomial(1.0, hashMapOf('x' to 1u, 'y' to 2u, 'z' to 3u)),
-                Monomial(1.0, hashMapOf('a' to 1u))
-            )
+                Monomial(1.0, hashMapOf('a' to 1u)),
+            ),
         )
     }
 
@@ -22,7 +22,7 @@ class OrderTest {
             lexicographicOrder(
                 Monomial(1.0, hashMapOf('x' to 1u, 'y' to 2u, 'z' to 3u)),
                 Monomial(1.0, hashMapOf('y' to 3u, 'z' to 3u)),
-            )
+            ),
         )
     }
 
@@ -33,7 +33,7 @@ class OrderTest {
             lexicographicOrder(
                 Monomial(1.0, hashMapOf('x' to 1u, 'y' to 2u, 'z' to 3u)),
                 Monomial(1.0, hashMapOf('x' to 1u, 'y' to 2u, 'z' to 3u)),
-            )
+            ),
         )
     }
 
@@ -43,8 +43,8 @@ class OrderTest {
             -1,
             lexicographicOrder(
                 Monomial(1.0, hashMapOf('a' to 1u, 'y' to 2u, 'z' to 3u)),
-                Monomial(1.0, hashMapOf('b' to 1u))
-            )
+                Monomial(1.0, hashMapOf('b' to 1u)),
+            ),
         )
     }
 
@@ -55,7 +55,7 @@ class OrderTest {
             lexicographicOrder(
                 Monomial(1.0, hashMapOf('x' to 1u, 'y' to 2u, 'z' to 4u)),
                 Monomial(1.0, hashMapOf('x' to 1u, 'y' to 2u, 'z' to 3u)),
-            )
+            ),
         )
     }
 }

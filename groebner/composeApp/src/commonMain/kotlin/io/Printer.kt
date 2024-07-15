@@ -22,8 +22,9 @@ fun printPolynomial(p: Polynomial): String {
     for (monomial in p.monomials) {
         // sign
         if (monomial.coefficient >= 0) {
-            if (!leadingMonomial)
+            if (!leadingMonomial) {
                 terms.add("+")
+            }
         } else {
             terms.add("-")
         }

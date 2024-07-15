@@ -12,7 +12,7 @@ class Add {
         val p2 = parsePolynomial("3 x").getOrNull()!!
         assertEquals(
             "2 x^2 y + 3 x + 1",
-            printPolynomial(addPolynomial(p1, p2))
+            printPolynomial(addPolynomial(p1, p2)),
         )
     }
 
@@ -22,7 +22,7 @@ class Add {
         val p2 = parsePolynomial("3 x^2 y").getOrNull()!!
         assertEquals(
             "5 x^2 y + 1",
-            printPolynomial(addPolynomial(p1, p2))
+            printPolynomial(addPolynomial(p1, p2)),
         )
     }
 
@@ -32,7 +32,7 @@ class Add {
         val p2 = parsePolynomial("-2 x^2 y").getOrNull()!!
         assertEquals(
             "1",
-            printPolynomial(addPolynomial(p1, p2))
+            printPolynomial(addPolynomial(p1, p2)),
         )
     }
 
@@ -42,7 +42,7 @@ class Add {
         val p2 = parsePolynomial("z").getOrNull()!!
         assertEquals(
             "y^2 + z",
-            printPolynomial(addPolynomial(p1, p2))
+            printPolynomial(addPolynomial(p1, p2)),
         )
     }
 
@@ -52,7 +52,7 @@ class Add {
         val p2 = parsePolynomial("z^0").getOrNull()!!
         assertEquals(
             "2",
-            printPolynomial(addPolynomial(p1, p2))
+            printPolynomial(addPolynomial(p1, p2)),
         )
     }
 }
