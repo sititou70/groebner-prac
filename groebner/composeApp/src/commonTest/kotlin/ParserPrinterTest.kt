@@ -68,7 +68,7 @@ class ParserPrinterTest {
     }
 
     @Test
-    fun vartiableSorting() {
+    fun variableSorting() {
         val parsed = parsePolynomial("c b a").getOrNull()
         assertNotNull(parsed)
         assertEquals("a b c", printPolynomial(parsed))

@@ -1,14 +1,12 @@
 import io.parsePolynomial
 import io.printPolynomial
 
+@OptIn(ExperimentalJsExport::class)
 @JsExport
-fun groebnerBasisString(inputs: String): String {
-    return groebnerBasis(
+fun groebnerBasisString(inputs: String): String =
+    groebnerBasis(
         inputs
             .split(",")
             .map { parsePolynomial(it).getOrThrow() }
             .toSet(),
-    )
-        .map { printPolynomial(it) }
-        .joinToString(",")
-}
+    ).joinToString(",") { printPolynomial(it) }

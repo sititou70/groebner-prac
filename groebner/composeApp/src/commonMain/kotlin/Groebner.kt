@@ -115,7 +115,7 @@ fun reduceGroebnerBasis(inputBasis: Set<Polynomial>): Set<Polynomial> {
 }
 
 fun groebnerBasis(inputBasis: Set<Polynomial>): Set<Polynomial> {
-    var basis = inputBasis.toMutableSet()
+    val basis = inputBasis.toMutableSet()
     var isChanged: Boolean
     do {
         isChanged = false

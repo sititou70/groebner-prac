@@ -23,9 +23,7 @@ fun mulMonomial(
 fun mulPolynomialByMonomial(
     p: Polynomial,
     m: Monomial,
-): Polynomial {
-    return polynomialOf(p.monomials.map { mulMonomial(it, m) })
-}
+): Polynomial = polynomialOf(p.monomials.map { mulMonomial(it, m) })
 
 fun mulPolynomial(
     p1: Polynomial,

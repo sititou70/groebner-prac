@@ -7,12 +7,13 @@ class GroebnerTest {
     @Test
     fun questions() {
         val questions =
-            sampleQuestions.split("---")
+            sampleQuestions
+                .split("---")
                 .map { it.split("\n\n") }
-                .map {
+                .map { splited ->
                     object {
-                        val basis = it[2].split("\n").map { parsePolynomial(it).getOrThrow() }.toSet()
-                        val groebnerBasis = it[3].split("\n").toSet()
+                        val basis = splited[2].split("\n").map { parsePolynomial(it).getOrThrow() }.toSet()
+                        val groebnerBasis = splited[3].split("\n").toSet()
                     }
                 }
 

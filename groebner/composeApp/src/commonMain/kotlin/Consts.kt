@@ -1,3 +1,4 @@
+@OptIn(ExperimentalJsExport::class)
 @JsExport
 val sampleQuestions = """
 
